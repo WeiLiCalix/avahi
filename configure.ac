@@ -99,8 +99,7 @@ if test x"$enable_ssp" = x"yes"; then
     LDFLAGS="$LDFLAGS -Wl,-z,defs"
     cat confdefs.h > conftest.c
     cat >>conftest.c <<_ACEOF
-void test_broken_ssp(c)
-    const char *c;
+void test_broken_ssp(const char *c)
 {
     char arr[[123]], *p; /* beware of possible double-braces if copying this */
     for (p = arr; *c; ++p) {
@@ -300,7 +299,7 @@ AM_CONDITIONAL(TARGET_FREEBSD, test x"$with_distro" = xfreebsd)
 AM_CONDITIONAL(TARGET_SLACKWARE, test x"$with_distro" = xslackware)
 
 test_gcc_flag() {
-    AC_LANG_CONFTEST([int main() {}])
+    AC_LANG_CONFTEST([int main(void) {}])
     $CC -c conftest.c $CFLAGS $@ > /dev/null 2> /dev/null
     ret=$?
     rm -f conftest.o
@@ -674,7 +673,7 @@ if test "x$HAVE_DBUS" = "xyes" ; then
     if ! test -z "$with_dbus_sys" ; then
         DBUS_SYS_DIR="$with_dbus_sys"
     else
-        DBUS_SYS_DIR="${sysconfdir}/dbus-1/system.d"
+        DBUS_SYS_DIR="${datadir}/dbus-1/system.d"
     fi
     AC_SUBST(DBUS_SYS_DIR)
 
